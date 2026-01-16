@@ -1,8 +1,9 @@
-package com.example.bankcards.service;
+package com.example.bankcards.security.impl;
 
 import com.example.bankcards.entity.enums.Role;
 import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.security.User;
+import com.example.bankcards.security.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserServiceImpl implements UserService {
     private final UserRepository repository;
 
     public User save(User user) {
@@ -39,7 +40,6 @@ public class UserService {
     }
 
     public User getCurrentUser() {
-        // Получение имени пользователя из контекста Spring Security
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         return getByUsername(username);
     }
