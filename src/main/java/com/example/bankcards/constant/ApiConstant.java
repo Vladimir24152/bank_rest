@@ -9,6 +9,10 @@ public final class ApiConstant {
 
     public static final String AUTH_BASE_URL = "/api/v1/auth";
 
+    public static final String CARD_BASE_URL = "/api/v1/card";
+
+    public static final String CREATE = "/create";
+
     public static final String SIGN_UP = "/sign-up";
 
     public static final String SIGN_IN = "/sign-in";

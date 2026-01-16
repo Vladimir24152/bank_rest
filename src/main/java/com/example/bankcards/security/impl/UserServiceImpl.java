@@ -1,9 +1,11 @@
 package com.example.bankcards.security.impl;
 
 import com.example.bankcards.entity.enums.Role;
+import com.example.bankcards.exception.EntityAlreadyExistsException;
 import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.security.User;
 import com.example.bankcards.security.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,16 +24,14 @@ public class UserServiceImpl implements UserService {
 
     public User create(User user) {
         if (repository.existsByUsername(user.getUsername())) {
-            // Заменить на свои исключения
-            throw new RuntimeException("Пользователь с таким именем уже существует");
+            throw new EntityAlreadyExistsException("Пользователь с именем '%s' уже существует".formatted(user.getUsername()));
         }
-
         return save(user);
     }
 
     public User getByUsername(String username) {
         return repository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь с таким именем не найден"));
 
     }
 
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void giveAdmin(Long userId) {
         var user = repository.findById(userId).orElseThrow(
-                () -> new RuntimeException("Пользователь с таким id отсутствует;")//Заменить на свое исключение!!!
+                () -> new EntityNotFoundException("Пользователь с id '%s' отсутствует.".formatted(userId))
         );
         user.setRole(Role.ROLE_ADMIN);
         save(user);

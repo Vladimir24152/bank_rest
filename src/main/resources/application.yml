@@ -26,7 +26,7 @@ card:
   encryption:
     algorithm: AES
     transformation: AES/ECB/PKCS5Padding
-    key: SecretKey1234567890
+    key: 1234567890123456
 
 token:
   signing:

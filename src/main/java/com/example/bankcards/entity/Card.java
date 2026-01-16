@@ -10,11 +10,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "cards")
 public class Card {
@@ -25,7 +33,7 @@ public class Card {
     private Long id;
 
     @Comment("Зашифрованный номер карты")
-    @Column(name = "encrypted_card_number", nullable = false, unique = true, length = 500)
+    @Column(name = "encrypted_card_number", nullable = false, unique = true, length = 200)
     private String encryptedCardNumber;
 
     @Comment("Последние 4 цифры карты")
