@@ -1,20 +1,20 @@
-version: '3.1'
+version: '3.8'
 
 volumes:
   db-card:
 
 services:
   card_db:
-    image: postgres
+    image: postgres:15-alpine
     restart: always
     environment:
-      - POSTGRES_USER={CARD_DB_USER}
-      - POSTGRES_PASSWORD={CARD_DB_PASSWORD}
-      - POSTGRES_DB={CARD_DB-NAME}
+      POSTGRES_USER: ${CARD_DB_USER}
+      POSTGRES_PASSWORD: ${CARD_DB_PASSWORD}
+      POSTGRES_DB: ${CARD_DB_NAME}
     volumes:
-      - db-card:/var/lib/postgresql
+      - db-card:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -29,8 +29,9 @@ services:
       card_db:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://card_db:5432/${DB_NAME}
-      SPRING_DATASOURCE_USERNAME: ${DB_USER}
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://card_db:5432/${CARD_DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${CARD_DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${CARD_DB_PASSWORD}
+
     ports:
       - "8080:8080"
