@@ -13,6 +13,7 @@ public class CardMapperImpl implements CardMapper {
                 .id(savedCard.getId())
                 .encryptedCardNumber("**** **** **** " + savedCard.getLastFourDigits())
                 .clientId(savedCard.getClientId())
+                .expirationDate(savedCard.getExpirationDate())
                 .status(savedCard.getStatus())
                 .balance(savedCard.getBalance())
                 .build();
