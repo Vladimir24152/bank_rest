@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import static com.example.bankcards.constant.ApiConstant.CARD_BASE_URL;
 import static com.example.bankcards.constant.ApiConstant.CREATE;
 
+@RequestMapping(CARD_BASE_URL)
 public interface CardController {
 
+    @PostMapping(CREATE)
     @Operation(summary = "Создание карты")
     ResponseEntity<CardResponse> createCard(@Valid @RequestBody CreateCardRequest createCardRequest);
 }

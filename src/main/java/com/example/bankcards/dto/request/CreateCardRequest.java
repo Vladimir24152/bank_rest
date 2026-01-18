@@ -1,6 +1,8 @@
 package com.example.bankcards.dto.request;
 
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -14,7 +16,7 @@ import java.time.LocalDate;
 public class CreateCardRequest {
 
     @NotNull(message = "Номер карты обязателен")
-    @Size(max = 16, message = "Длинна не более 16 символов")
+    @Pattern(regexp = "^[0-9]{16}$", message = "Номер карты должен содержать 16 цифр")
     private String cardNumber;
 
     @NotNull(message = "Идентификатор пользователя обязателен")
@@ -24,5 +26,7 @@ public class CreateCardRequest {
     @NotNull(message = "Время окончания действия карты обязательно")
     private LocalDate expirationDate;
 
+    @NotNull(message = "Баланс обязателен")
+    @DecimalMin(value = "0.0", message = "Баланс не может быть отрицательным")
     private BigDecimal balance;
 }

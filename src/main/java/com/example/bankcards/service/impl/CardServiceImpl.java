@@ -4,10 +4,13 @@ import com.example.bankcards.dto.request.CreateCardRequest;
 import com.example.bankcards.dto.response.CardResponse;
 import com.example.bankcards.entity.Card;
 import com.example.bankcards.entity.enums.CardStatus;
+import com.example.bankcards.exception.EntityAlreadyExistsException;
 import com.example.bankcards.mapper.CardMapper;
 import com.example.bankcards.repository.CardRepository;
+import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.service.CardEncryptionService;
 import com.example.bankcards.service.CardService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,8 @@ public class CardServiceImpl implements CardService {
 
     private final CardRepository cardRepository;
 
+    private final UserRepository userRepository;
+
     private final CardMapper cardMapper;
 
     private final CardEncryptionService cardEncryptionService;
@@ -32,6 +37,14 @@ public class CardServiceImpl implements CardService {
 
         String encryptedCardNumber = cardEncryptionService.encrypt(request.getCardNumber());
         String lastFourDigits = extractLastFourDigits(request.getCardNumber());
+
+        if (cardRepository.existsByEncryptedCardNumber(encryptedCardNumber)) {
+            throw new EntityAlreadyExistsException("Карта с номером **** **** **** " + lastFourDigits + " уже существует");
+        }
+
+        if (!userRepository.existsById(request.getClientId())) {
+            throw new IllegalArgumentException("Пользователя с ID " + request.getClientId() + " не существует");
+        }
 
         CardStatus status = determineCardStatus(request.getExpirationDate());
 
