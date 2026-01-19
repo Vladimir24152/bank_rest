@@ -1,10 +1,10 @@
-package com.example.bankcards.security.impl;
+package com.example.bankcards.service.impl;
 
 import com.example.bankcards.dto.request.SignInRequest;
 import com.example.bankcards.dto.request.SignUpRequest;
 import com.example.bankcards.dto.response.JwtAuthenticationResponse;
 import com.example.bankcards.entity.enums.Role;
-import com.example.bankcards.security.AuthenticationService;
+import com.example.bankcards.service.AuthenticationService;
 import com.example.bankcards.security.JwtService;
 import com.example.bankcards.security.User;
 import com.example.bankcards.security.UserService;

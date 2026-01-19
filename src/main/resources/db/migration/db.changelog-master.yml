@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db/migration/2026/01/2026-01-16-add_first_admin.sql
   - include:
       file: db/migration/2026/01/2026-01-16-create_cards_table.sql
+  - include:
+      file: db/migration/2026/01/2026-01-19-create_transfers_table.sql

@@ -1,4 +1,4 @@
-package com.example.bankcards.security;
+package com.example.bankcards.service;
 
 import com.example.bankcards.dto.request.SignInRequest;
 import com.example.bankcards.dto.request.SignUpRequest;
