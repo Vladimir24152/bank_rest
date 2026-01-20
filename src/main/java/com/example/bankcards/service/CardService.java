@@ -5,7 +5,6 @@ import com.example.bankcards.dto.request.CreateCardRequest;
 import com.example.bankcards.dto.request.UpdateCardRequest;
 import com.example.bankcards.dto.response.CardResponse;
 import com.example.bankcards.dto.response.CardTransferResponse;
-import com.example.bankcards.entity.Card;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -15,19 +14,19 @@ public interface CardService{
 
     CardResponse createCard(CreateCardRequest createCardRequest);
 
-    Page<Card> getAllCards(PageRequest pageRequest);
+    Page<CardResponse> getAllCards(PageRequest pageRequest);
 
-    Page<Card> getAllCardsByUserId(Long userId, PageRequest pageRequest);
+    Page<CardResponse> getAllCardsByUserId(Long userId, PageRequest pageRequest);
 
-    Page<Card> getAllCardsByLastFourDigits(String cardNumber, PageRequest pageRequest);
+    Page<CardResponse> getAllCardsByLastFourDigits(String cardNumber, PageRequest pageRequest);
 
     CardResponse updateCard(Long cardId, UpdateCardRequest request);
 
     BigDecimal getCardBalance(Long cardId);
 
-    Card getCard(Long cardId);
+    CardResponse getCard(Long cardId);
 
     CardTransferResponse transferBetweenCards(CardTransferRequest transferRequest);
 
-    Card blockedCard(Long cardId);
+    CardResponse blockedCard(Long cardId);
 }

@@ -57,6 +57,8 @@ public class CardServiceImpl implements CardService {
     @Transactional
     public CardResponse createCard(CreateCardRequest request) {
 
+        log.info("Создание карты для пользователя ID: {}", request.getClientId());
+
         String encryptedCardNumber = cardEncryptionService.encrypt(request.getCardNumber());
         String lastFourDigits = extractLastFourDigits(request.getCardNumber());
 
@@ -80,32 +82,40 @@ public class CardServiceImpl implements CardService {
                 .build();
 
         Card savedCard = cardRepository.save(card);
+
+        log.info("Карта успешно создана: ID {} для пользователя ID {}", savedCard.getId(), savedCard.getClientId());
+
         return cardMapper.mapToResponseDTO(savedCard);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Card> getAllCards(PageRequest pageRequest) {
-        return cardRepository.findAll(pageRequest);
+    public Page<CardResponse> getAllCards(PageRequest pageRequest) {
+        return cardRepository.findAll(pageRequest)
+                .map(cardMapper::mapToResponseDTO);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Card> getAllCardsByUserId(Long userId, PageRequest pageRequest) {
+    public Page<CardResponse> getAllCardsByUserId(Long userId, PageRequest pageRequest) {
         verificationAccessRights(userId);
 
-        return cardRepository.findAllByClientId(userId, pageRequest);
+        return cardRepository.findAllByClientId(userId, pageRequest)
+                .map(cardMapper::mapToResponseDTO);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Card> getAllCardsByLastFourDigits(String cardNumber, PageRequest pageRequest) {
-        return cardRepository.findAllByLastFourDigits(cardNumber, pageRequest);
+    public Page<CardResponse> getAllCardsByLastFourDigits(String cardNumber, PageRequest pageRequest) {
+        return cardRepository.findAllByLastFourDigits(cardNumber, pageRequest)
+                .map(cardMapper::mapToResponseDTO);
     }
 
     @Override
     @Transactional
     public CardResponse updateCard(Long cardId, UpdateCardRequest request) {
+
+        log.debug("Обновление карты ID: {}", cardId);
 
         Card card = cardRepository.findById(cardId).orElseThrow(
                 () -> new EntityNotFoundException("Карта с номером Id " + cardId + " уже отсутствует"));
@@ -120,13 +130,14 @@ public class CardServiceImpl implements CardService {
 
         Card updatedCard = cardRepository.save(card);
 
+        log.debug("Карта с ID: {} успешно обновлена", cardId);
+
         return cardMapper.mapToResponseDTO(updatedCard);
     }
 
     @Override
     @Transactional(readOnly = true)
     public BigDecimal getCardBalance(Long cardId) {
-        System.out.println("Работает сервис!!!" + cardId);
         Card card = cardRepository.findById(cardId).orElseThrow(
                 () -> new EntityNotFoundException("Карта с номером Id " + cardId + " отсутствует"));
 
@@ -137,13 +148,14 @@ public class CardServiceImpl implements CardService {
 
     @Override
     @Transactional
-    public Card getCard(Long cardId) {
+    public CardResponse getCard(Long cardId) {
+        log.info("Получение карты ID: {}", cardId);
         Card card = cardRepository.findById(cardId).orElseThrow(
                 () -> new EntityNotFoundException("Карта с номером Id " + cardId + " отсутствует"));
 
         verificationAccessRights(card.getClientId());
 
-        return card;
+        return cardMapper.mapToResponseDTO(card);
     }
 
     @Override
@@ -185,7 +197,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     @Transactional
-    public Card blockedCard(Long cardId) {
+    public CardResponse blockedCard(Long cardId) {
         Card card = cardRepository.findById(cardId).orElseThrow(
                 () -> new EntityNotFoundException("Карта с номером Id " + cardId + " отсутствует"));
 
@@ -196,9 +208,8 @@ public class CardServiceImpl implements CardService {
         }
 
         card.setStatus(REQUEST_FOR_BLOCKING);
-        cardRepository.save(card);
 
-        return cardRepository.save(card);
+        return cardMapper.mapToResponseDTO(cardRepository.save(card));
     }
 
     private void checkValidationRequest(Card fromCard, Card toCard, BigDecimal amount) {
@@ -245,6 +256,8 @@ public class CardServiceImpl implements CardService {
         boolean isSameUser = currentUser.getId().equals(userId);
 
         if (!isAdmin && !isSameUser) {
+            log.warn("Отказ в доступе: пользователь ID {} пытается получить доступ к данным пользователя ID {}",
+                    currentUser.getId(), userId);
             throw new AccessDeniedException("У вас нет прав для взаимодействия с картой другого пользователя");
         }
     }

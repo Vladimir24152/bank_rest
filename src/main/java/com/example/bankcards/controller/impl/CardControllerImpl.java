@@ -6,7 +6,6 @@ import com.example.bankcards.dto.request.CreateCardRequest;
 import com.example.bankcards.dto.request.UpdateCardRequest;
 import com.example.bankcards.dto.response.CardResponse;
 import com.example.bankcards.dto.response.CardTransferResponse;
-import com.example.bankcards.entity.Card;
 import com.example.bankcards.service.CardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,24 +32,24 @@ public class CardControllerImpl implements CardController {
     }
 
     @Override
-    public ResponseEntity<Card> getCard(Long cardId) {
+    public ResponseEntity<CardResponse> getCard(Long cardId) {
         return ResponseEntity.ok(cardService.getCard(cardId));
     }
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
-    public Page<Card> getAllCards(Integer page, Integer size) {
+    public Page<CardResponse> getAllCards(Integer page, Integer size) {
         return cardService.getAllCards(PageRequest.of(page, size));
     }
 
     @Override
-    public Page<Card> getAllCardsByUserId(Long userId, Integer page, Integer size) {
+    public Page<CardResponse> getAllCardsByUserId(Long userId, Integer page, Integer size) {
         return cardService.getAllCardsByUserId(userId, PageRequest.of(page, size));
     }
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
-    public Page<Card> getAllCardsByCardNumber(String cardNumber, Integer page, Integer size) {
+    public Page<CardResponse> getAllCardsByCardNumber(String cardNumber, Integer page, Integer size) {
         return cardService.getAllCardsByLastFourDigits(cardNumber, PageRequest.of(page, size));
     }
 
@@ -63,14 +62,13 @@ public class CardControllerImpl implements CardController {
 
     @Override
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Card> blockedCard(Long cardId) {
+    public ResponseEntity<CardResponse> blockedCard(Long cardId) {
         return ResponseEntity.ok(cardService.blockedCard(cardId));
     }
 
     @Override
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<BigDecimal> getCardBalance(Long cardId) {
-        System.out.println("Работает контроллер!!!" + cardId);
         return ResponseEntity.ok(cardService.getCardBalance(cardId));
     }
 

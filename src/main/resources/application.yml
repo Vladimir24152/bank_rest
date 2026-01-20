@@ -34,3 +34,9 @@ token:
 
 server:
   port: 8080
+
+logging:
+  level:
+    com.example.bankcards: DEBUG
+    org.springframework.security: INFO
+    root: INFO

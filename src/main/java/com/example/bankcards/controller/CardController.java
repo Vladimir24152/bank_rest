@@ -5,7 +5,6 @@ import com.example.bankcards.dto.request.CreateCardRequest;
 import com.example.bankcards.dto.request.UpdateCardRequest;
 import com.example.bankcards.dto.response.CardResponse;
 import com.example.bankcards.dto.response.CardTransferResponse;
-import com.example.bankcards.entity.Card;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -41,18 +40,18 @@ public interface CardController {
 
     @GetMapping(CARD_ID)
     @Operation(summary = "Получение карты по Id")
-    ResponseEntity<Card> getCard(@PathVariable Long cardId);
+    ResponseEntity<CardResponse> getCard(@PathVariable Long cardId);
 
     @GetMapping(GET_ALL)
     @Operation(summary = "Получение всех карт")
-    Page<Card> getAllCards(
+    Page<CardResponse> getAllCards(
             @RequestParam(defaultValue = "0") @Min(0) Integer  page,
             @RequestParam(defaultValue = "20") @Min(1) @Max(100) Integer size
     );
 
     @GetMapping(GET_ALL + USER_ID)
     @Operation(summary = "Получение всех карт по id пользователя")
-    Page<Card> getAllCardsByUserId(
+    Page<CardResponse> getAllCardsByUserId(
             @PathVariable Long userId,
             @RequestParam(defaultValue = "0") @Min(0) Integer  page,
             @RequestParam(defaultValue = "20") @Min(1) @Max(100) Integer size
@@ -60,7 +59,7 @@ public interface CardController {
 
     @GetMapping(GET_ALL + CARD_NUMBER)
     @Operation(summary = "Получение всех карт по последним 4 цифрам")
-    Page<Card> getAllCardsByCardNumber(
+    Page<CardResponse> getAllCardsByCardNumber(
             @PathVariable String cardNumber,
             @RequestParam(defaultValue = "0") @Min(0) Integer  page,
             @RequestParam(defaultValue = "20") @Min(1) @Max(100) Integer size
@@ -75,7 +74,7 @@ public interface CardController {
 
     @PostMapping(BLOCKED + CARD_ID)
     @Operation(summary = "Запрос на блокировку карты")
-    ResponseEntity<Card>  blockedCard(@PathVariable Long cardId);
+    ResponseEntity<CardResponse>  blockedCard(@PathVariable Long cardId);
 
     @GetMapping(BALANCE + CARD_ID)
     @Operation(summary = "Получение баланса карты по Id")
