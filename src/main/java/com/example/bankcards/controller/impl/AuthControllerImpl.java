@@ -5,7 +5,7 @@ import com.example.bankcards.dto.request.SignInRequest;
 import com.example.bankcards.dto.request.SignUpRequest;
 import com.example.bankcards.dto.response.JwtAuthenticationResponse;
 import com.example.bankcards.service.AuthenticationService;
-import com.example.bankcards.security.UserService;
+import com.example.bankcards.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;

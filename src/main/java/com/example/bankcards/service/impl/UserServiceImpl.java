@@ -1,10 +1,10 @@
-package com.example.bankcards.security.impl;
+package com.example.bankcards.service.impl;
 
 import com.example.bankcards.entity.enums.Role;
 import com.example.bankcards.exception.EntityAlreadyExistsException;
 import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.security.User;
-import com.example.bankcards.security.UserService;
+import com.example.bankcards.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,6 @@ public class UserServiceImpl implements UserService {
     public User getByUsername(String username) {
         return repository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь с таким именем не найден"));
-
     }
 
     public UserDetailsService userDetailsService() {

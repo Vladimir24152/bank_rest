@@ -29,7 +29,6 @@ public class CardEncryptionServiceImpl implements CardEncryptionService {
         log.info("Encryption key length: {} bytes", encryptionKey.getBytes(StandardCharsets.UTF_8).length);
         log.info("Algorithm: {}, Transformation: {}", algorithm, transformation);
 
-        // Проверка длины ключа
         byte[] keyBytes = encryptionKey.getBytes(StandardCharsets.UTF_8);
         if (keyBytes.length != 16 && keyBytes.length != 24 && keyBytes.length != 32) {
             throw new IllegalStateException(
@@ -73,20 +72,5 @@ public class CardEncryptionServiceImpl implements CardEncryptionService {
         } catch (Exception e) {
             throw new CardEncryptionException("Проблема с расшифровкой номера карты.");
         }
-    }
-
-    public String extractLastFourDigits(String cardNumber) {
-        if (cardNumber == null || cardNumber.length() < 4) {
-            throw new IllegalArgumentException("Номер карты должен содержать минимум 4 цифры");
-        }
-        return cardNumber.substring(cardNumber.length() - 4);
-    }
-
-    public String maskCardNumber(String cardNumber) {
-        if (cardNumber == null || cardNumber.length() < 4) {
-            return "**** **** **** ****";
-        }
-        String lastFour = cardNumber.substring(cardNumber.length() - 4);
-        return "**** **** **** " + lastFour;
     }
 }

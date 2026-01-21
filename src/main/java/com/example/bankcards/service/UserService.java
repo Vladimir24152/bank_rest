@@ -1,5 +1,6 @@
-package com.example.bankcards.security;
+package com.example.bankcards.service;
 
+import com.example.bankcards.security.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService {

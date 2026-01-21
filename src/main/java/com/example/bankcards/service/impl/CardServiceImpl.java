@@ -15,7 +15,7 @@ import com.example.bankcards.repository.CardRepository;
 import com.example.bankcards.repository.TransferRepository;
 import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.security.User;
-import com.example.bankcards.security.UserService;
+import com.example.bankcards.service.UserService;
 import com.example.bankcards.service.CardEncryptionService;
 import com.example.bankcards.service.CardService;
 import jakarta.persistence.EntityNotFoundException;

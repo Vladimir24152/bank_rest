@@ -3,6 +3,7 @@ package com.example.bankcards.dto.request;
 import com.example.bankcards.entity.enums.CardStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMin;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
+@Builder
 public class UpdateCardRequest {
 
     @Schema(description = "Статус карты", example = "ACTIVE")

@@ -7,7 +7,7 @@ import com.example.bankcards.entity.enums.Role;
 import com.example.bankcards.service.AuthenticationService;
 import com.example.bankcards.security.JwtService;
 import com.example.bankcards.security.User;
-import com.example.bankcards.security.UserService;
+import com.example.bankcards.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
